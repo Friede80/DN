@@ -1,9 +1,8 @@
-module Lib
-  ( runNetwork
-  ) where
+module Lib where
 
 import Data.List
 import Data.Ord
+import Debug.Trace
 
 --Configuration Constants
 -- TODO: Get inside a reader monad?
@@ -23,19 +22,19 @@ data Neuron2 = Neuron2 { topDownWeights :: [Double]
                        , age2 :: Int
                        } deriving Show
 
-data SensorLayer = SensorLayer { input :: [Double] } deriving Show
+newtype SensorLayer = SensorLayer [Double] deriving Show
 
-data HiddenLayer = HiddenLayer { neurons2 :: [Neuron2] } deriving (Show)
+newtype HiddenLayer = HiddenLayer [Neuron2] deriving Show
 
-data MotorLayer = MotorLayer { neurons :: [Neuron] } deriving Show
+newtype MotorLayer = MotorLayer [Neuron] deriving Show
 
 data Network = Network HiddenLayer MotorLayer deriving Show
 
 initialNetwork :: Network
 initialNetwork = Network hidden motor
   where
-    hidden = HiddenLayer { neurons2 = initialNeurons2 }
-    motor = MotorLayer { neurons = initialNeurons }
+    hidden = HiddenLayer initialNeurons2
+    motor = MotorLayer initialNeurons
     initialNeurons2 = [ Neuron2 { topDownWeights = [0.3, 0.1, 0.7, 0.8]
                                 , bottomUpWeights = [0.5, 0.1, 0.2]
                                 , age2 = 0 }
@@ -55,12 +54,14 @@ runNetwork (z:zs) (x:xs) = foldl runNetwork' (runFirst initialNetwork) (zip zs x
 
 runNetwork' :: Network -> (Response, Response) -> Network
 runNetwork' (Network hidden motor) (z, x) = let newHiddenResponse = hiddenResponse z x hidden
-                                            in undefined
+                                                newHiddenLayer = hebbianLearnHidden x newHiddenResponse z hidden
+                                                newMotorLayer = updateMotorWeights z newHiddenResponse motor
+                                            in Network newHiddenLayer newMotorLayer
 
 hebbianLearnHidden :: Response -> Response -> Response -> HiddenLayer -> HiddenLayer
-hebbianLearnHidden x y z hidden
-  | length (neurons2 hidden) == length y = HiddenLayer {neurons2 = zipWith updateNeuron y (neurons2 hidden)}
-  | otherwise = HiddenLayer {neurons2 = zipWith updateNeuron y (newNeuron2 : neurons2 hidden)}
+hebbianLearnHidden x y z (HiddenLayer hidden)
+  | length hidden == length y = trace "No new neuron" $ HiddenLayer $ zipWith updateNeuron y hidden
+  | otherwise = trace "Adding new neuron" $ HiddenLayer $ zipWith updateNeuron y (newNeuron2 : hidden)
   where
     newNeuron2 = Neuron2 { topDownWeights = z
                          , bottomUpWeights = x
@@ -79,7 +80,7 @@ updateHiddenWeights w sig learningRate = zipWith learn w sig
 lRate :: Neuron2 -> Double
 lRate n = (1+mu) / a
   where
-    a = fromIntegral (age2 n)
+    a = fromIntegral (age2 n) + 1
     mu | a < t1 = 0
        | a < t2 = c * (a - t1) / (t2-t1)
        | otherwise = c * (a - t2) / gamma;
@@ -92,30 +93,33 @@ hebbianLearnMotor z y = zipWith learn (weights z) y
      learn w y' = (1 - learningRate) * w + (learningRate * y')
 
 topDownResponse :: Response -> HiddenLayer -> Response
-topDownResponse z y = topK k $ fmap (dot z . topDownWeights) (neurons2 y)
+topDownResponse z (HiddenLayer y) = fmap (dot z . topDownWeights) y
 
-bottumUpResponse :: Response -> HiddenLayer -> Response
-bottumUpResponse x y = topK k $ fmap (dot x . bottomUpWeights) (neurons2 y)
+bottomUpResponse :: Response -> HiddenLayer -> Response
+bottomUpResponse x (HiddenLayer y) = fmap (dot x . bottomUpWeights) y
 
 hiddenResponse :: Response -> Response -> HiddenLayer -> Response
-hiddenResponse z x y = hiddenTopK k $ zipWith (+) (topDownResponse z y) (bottumUpResponse x y)
+hiddenResponse z x y = traceShow (tdr,bur) $ hiddenTopK k $ zipWith (+) tdr bur
+  where
+    tdr = topDownResponse z y
+    bur = bottomUpResponse x y
 
 hiddenTopK :: Int -> [Double] -> [Double]
 hiddenTopK k ys = if isPerfectMatch
                     then map (max 0 . normalize min' max') ys
-                    else 1: map (const 0) ys
+                    else hiddenTopK k (2:ys)
   where
-    isPerfectMatch = any (>0.99) ys
+    isPerfectMatch = traceShow ("ys",ys) $ any (>1.99) ys
     sorted = sortBy (comparing Down) ys
     max' = head sorted
     min' = sorted!!k
 
 motorResponse :: Response -> MotorLayer -> Response
-motorResponse y z = topK k $ fmap (dot y . weights) (neurons z)
+motorResponse y (MotorLayer z) = topK k $ fmap (dot y . weights) z
 
 -- Take the current motor response and the hidden response to update the weights accordingly
 updateMotorWeights :: Response -> Response -> MotorLayer -> MotorLayer
-updateMotorWeights z y motor = MotorLayer $ zipWith updateNeuron z (neurons motor)
+updateMotorWeights z y (MotorLayer motor) = MotorLayer $ zipWith updateNeuron z motor
   where
     updateNeuron :: Double -> Neuron -> Neuron
     updateNeuron z' currentNeuron

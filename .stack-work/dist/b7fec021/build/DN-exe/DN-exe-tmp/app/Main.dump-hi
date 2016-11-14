@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2016-11-14 01:16:26.3757665 UTC
+2016-11-14 17:15:04.2684084 UTC
 
 interface main@main:Main 8001
-  interface hash: 76d54c8768d58697c148d119bb17ea97
-  ABI hash: 94c984d6f12f7912f20117f5e5ed0c19
-  export-list hash: 2a1db407fc443d2aa4a04dbe88c79921
+  interface hash: a428585eb2e0b930192a6ab082f3a452
+  ABI hash: a1d528e3cf2fe9eadd92bd3f763727ad
+  export-list hash: f0dd8a8b64138dbf9d1ae4cc88273d7f
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: a89dcee215ee1cae8c66d25ad3f9d7d4
   sig of: Nothing
@@ -15,14 +15,17 @@ exports:
   Main.main
 module dependencies:
 package dependencies: DN-0.1.0.0@DN-0.1.0.0-8yMn8QkkcEWDg7GIz2sx1m
-                      base-4.9.0.0* ghc-prim-0.5.0.0 integer-gmp-1.0.0.1
+                      base-4.9.0.0 ghc-prim-0.5.0.0 integer-gmp-1.0.0.1
 orphans: base-4.9.0.0:GHC.Base base-4.9.0.0:GHC.Float
 family instance modules: base-4.9.0.0:Control.Applicative
                          base-4.9.0.0:Data.Either base-4.9.0.0:Data.Functor.Const
                          base-4.9.0.0:Data.Monoid base-4.9.0.0:Data.Type.Equality
                          base-4.9.0.0:GHC.Generics base-4.9.0.0:GHC.IO.Exception
                          base-4.9.0.0:GHC.TypeLits
-import  -/  DN-0.1.0.0@DN-0.1.0.0-8yMn8QkkcEWDg7GIz2sx1m:Lib d93a1a3fafa35ac78c86630e2fb0d349
+import  -/  DN-0.1.0.0@DN-0.1.0.0-8yMn8QkkcEWDg7GIz2sx1m:Lib fdfdaa603c1449dfab0256e12471a0df
+import  -/  base-4.9.0.0:Data.Foldable 3cbed01c922be29649c33015287c82ca
+import  -/  base-4.9.0.0:GHC.Base dd8044a8d640eee51828c17c476a6ba7
+import  -/  base-4.9.0.0:GHC.List 47d436dfb7454bb1883fb4d943e3f389
 import  -/  base-4.9.0.0:Prelude 2d9cd8b0ec3d728f62b734df888d2e34
 import  -/  base-4.9.0.0:System.IO c1068c4f4231e3198e330f99a58145b0
 import  -/  ghc-prim-0.5.0.0:GHC.Types 7378e41b7749213c8c88ceb6b0665d4c
@@ -38,12 +41,18 @@ d6831ef04cb9301b090dfae6f7bb7ec7
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "main"#) -}
-9ed2a05fb4e88efcfbd868127340c323
+4c9d17afcbe915ba05c16f31e86a0ed1
+  $wxs :: GHC.Prim.Int# -> [[GHC.Types.Double]]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>, Inline: [0] -}
+62f3ee8957923a63a65619a3a5864e54
+  $wxs1 :: GHC.Prim.Int# -> [[GHC.Types.Double]]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>, Inline: [0] -}
+c3f8c86acca9693e42a9e26caa04460a
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-0a0d3fdd8e2875410bb184f3411e2180
+6fc32ed0e2abdbffd525f72f9d2966d2
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -55,26 +64,35 @@ d6831ef04cb9301b090dfae6f7bb7ec7
                    Main.main2
                    GHC.Types.True
                    eta) -}
-50a41e3202e20b60d8b1b885b21f9d31
+2d706cd306878ca8bb33214bd2ad4aa6
   main2 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.Types.:
+  {- Unfolding: (GHC.Base.++
                    @ GHC.Types.Char
-                   GHC.Show.shows8
+                   Lib.$fShowHiddenLayer3
                    Main.main3) -}
-59510f6d71c012536ffdbae699dcc660
-  main3 :: GHC.Base.String
-  {- Unfolding: (GHC.Show.showLitString Main.main5 Main.main4) -}
-a35b7e9355d5dc3db7e1203bfff470b7
-  main4 :: [GHC.Types.Char]
-  {- HasNoCafRefs,
-     Unfolding: (GHC.Types.:
-                   @ GHC.Types.Char
-                   GHC.Show.shows8
-                   (GHC.Types.[] @ GHC.Types.Char)) -}
-cf366eaaf9e75d1f13c75e8e7aec8de1
-  main5 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# "Hi Nicole"#) -}
-5dd9a5e59fab340465d5bcfb352e4ff6
+56e0ab426483227966559f69d13f80db
+  main3 :: [GHC.Types.Char]
+  {- Unfolding: (case Lib.$wrunNetwork
+                        Main.main5
+                        Main.main4 of ww { (#,#) ww1 ww2 ->
+                 case ww1 `cast` (Lib.N:HiddenLayer[0]) of wild {
+                   []
+                   -> GHC.CString.unpackAppendCString#
+                        "[]"#
+                        (GHC.Types.[] @ GHC.Types.Char)
+                   : x6 xs
+                   -> GHC.Types.:
+                        @ GHC.Types.Char
+                        GHC.Show.showList__2
+                        (case x6 of ww4 { Lib.Neuron2 ww5 ww6 ww3 ->
+                         Lib.$w$cshowsPrec1 0# ww5 ww6 ww3 (Main.main_showl xs) }) } }) -}
+71b8c08efbf7882d012021599713920e
+  main4 :: [[GHC.Types.Double]]
+  {- Unfolding: (Main.$wxs 4#) -}
+9ee09845522b89fbe2a800d00a744a50
+  main5 :: [[GHC.Types.Double]]
+  {- Unfolding: (Main.$wxs1 4#) -}
+611e1cae4ff79361f7313218e525eb00
   main6 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -82,11 +100,14 @@ cf366eaaf9e75d1f13c75e8e7aec8de1
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+767fb0ac993361d768ce2c1d5c3f1c15
+  main_showl :: [Lib.Neuron2] -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U> -}
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:
 parallel variables:
 parallel tycons:
-trusted: safe
+trusted: none
 require own pkg trusted: False
 
