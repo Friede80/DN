@@ -1,0 +1,332 @@
+
+==================== FINAL INTERFACE ====================
+2016-11-14 01:16:25.9034517 UTC
+
+interface DN-0.1.0.0-8yMn8QkkcEWDg7GIz2sx1m:Lib 8001
+  interface hash: e2ad823f0576f4dc2b31f02462b49778
+  ABI hash: d93a1a3fafa35ac78c86630e2fb0d349
+  export-list hash: 13bf4e24ff27831d22f81a66526944e2
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: edcd53bcabe721b232ec99aa727489bd
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Lib.topK
+module dependencies:
+package dependencies: base-4.9.0.0* ghc-prim-0.5.0.0
+                      integer-gmp-1.0.0.1
+orphans: base-4.9.0.0:GHC.Base base-4.9.0.0:GHC.Float
+family instance modules: base-4.9.0.0:Control.Applicative
+                         base-4.9.0.0:Data.Either base-4.9.0.0:Data.Functor.Const
+                         base-4.9.0.0:Data.Monoid base-4.9.0.0:Data.Type.Equality
+                         base-4.9.0.0:GHC.Generics base-4.9.0.0:GHC.IO.Exception
+                         base-4.9.0.0:GHC.TypeLits
+import  -/  base-4.9.0.0:Data.Foldable 3cbed01c922be29649c33015287c82ca
+import  -/  base-4.9.0.0:Data.List d711f98b49ef5d33e5b3d404631ed073
+import  -/  base-4.9.0.0:Data.OldList 3c899c6d8e6204063769214449ac0954
+import  -/  base-4.9.0.0:GHC.Base dd8044a8d640eee51828c17c476a6ba7
+import  -/  base-4.9.0.0:GHC.Err 20faef8829fd13c027d0ee2213637534
+import  -/  base-4.9.0.0:GHC.List 47d436dfb7454bb1883fb4d943e3f389
+import  -/  base-4.9.0.0:GHC.Num f0aed3315b3ed1b330b71fc4148a5581
+import  -/  base-4.9.0.0:GHC.Real 011de9ca3282ad24a84e4e15f974f98e
+import  -/  base-4.9.0.0:Prelude 2d9cd8b0ec3d728f62b734df888d2e34
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 16d48e012d23eaef9bca91ccdd572c02
+b86967c6dd1888eead1ae6c6e9bbb4f5
+  $tc'HiddenLayer :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8302863829632451421##
+                   7035908270735615647##
+                   Lib.$trModule
+                   Lib.$tc'HiddenLayer1) -}
+fee460277b6eff7a1efd081f46fcadbe
+  $tc'HiddenLayer1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'HiddenLayer"#) -}
+54d90574497b59353c9fc94e48ee3aa1
+  $tc'MotorLayer :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4849039749569772701##
+                   4337142762608626401##
+                   Lib.$trModule
+                   Lib.$tc'MotorLayer1) -}
+bc9871ce72b4890cae1241467a00e890
+  $tc'MotorLayer1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'MotorLayer"#) -}
+854641cbded8c6dff0dc735701252052
+  $tc'Neuron :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8402374203720580315##
+                   1701140850482707248##
+                   Lib.$trModule
+                   Lib.$tc'Neuron1) -}
+2b32f56a793e065e599afa5e5054478b
+  $tc'Neuron1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Neuron"#) -}
+74eda583930ee8ab1adf11d833018e39
+  $tc'Neuron2 :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   1719781723041640179##
+                   669237472921793990##
+                   Lib.$trModule
+                   Lib.$tc'Neuron3) -}
+7e5c2ff580436352c0974c87c527e2f1
+  $tc'Neuron3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Neuron2"#) -}
+d5eb621b547834d832b67654dad010bb
+  $tc'SensorLayer :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   17072361240257852204##
+                   8693387044562408139##
+                   Lib.$trModule
+                   Lib.$tc'SensorLayer1) -}
+44622a8ac3356e10c76ba8d9e3bb1b2a
+  $tc'SensorLayer1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'SensorLayer"#) -}
+012cf6ef6852e04b2f0e47332ecd8d8a
+  $tc'X :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   6270896515343359114##
+                   1591913149136274607##
+                   Lib.$trModule
+                   Lib.$tc'X1) -}
+04df25d9b3dcd898f46ce6ea2d3358d2
+  $tc'X1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'X"#) -}
+859e014ea19d418fabce4b94a025a0bf
+  $tc'Y :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   1194687863665052395##
+                   12407856551610060536##
+                   Lib.$trModule
+                   Lib.$tc'Y1) -}
+662d624425b716ac984e66ed55d740d6
+  $tc'Y1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Y"#) -}
+60847362aa109c64c3f08c218f62090e
+  $tc'Z :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   6354572996307246340##
+                   8391204347777087411##
+                   Lib.$trModule
+                   Lib.$tc'Z1) -}
+baa148b68785bb41f29f8fae9259c980
+  $tc'Z1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Z"#) -}
+e7ca81c8b0ed0268325c8221b5bb07f8
+  $tcHiddenLayer :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14697940137947029859##
+                   18145538216938186301##
+                   Lib.$trModule
+                   Lib.$tcHiddenLayer1) -}
+7d4c2b7ad3a8f8d7438091872fa2feb9
+  $tcHiddenLayer1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "HiddenLayer"#) -}
+6b0c3c9d9b655e29287ee87889a35584
+  $tcLayer :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   13804935791568089724##
+                   16818771464998262110##
+                   Lib.$trModule
+                   Lib.$tcLayer1) -}
+cd992438c70e2e0fb0f7ae5baea6d0ee
+  $tcLayer1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Layer"#) -}
+f6c38dbe594b22a60cdf2561b9640779
+  $tcMotorLayer :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   11475729911707971818##
+                   9110696200767233253##
+                   Lib.$trModule
+                   Lib.$tcMotorLayer1) -}
+66f49d11826b55872d38dce930fcd544
+  $tcMotorLayer1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "MotorLayer"#) -}
+ec59aeb20847c292d7b2cabcc0441799
+  $tcNeuron :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8004393656819181147##
+                   12713173677252173803##
+                   Lib.$trModule
+                   Lib.$tcNeuron1) -}
+2147af9e2784905aa90129abfb188dc8
+  $tcNeuron1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Neuron"#) -}
+42c6e8ded2575c717537699a53fedd71
+  $tcNeuron2 :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8245788511596887265##
+                   1347225349218594366##
+                   Lib.$trModule
+                   Lib.$tcNeuron3) -}
+63dafaf27b3a1710dfb2502345e81fe9
+  $tcNeuron3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Neuron2"#) -}
+ead088bfbb690d24d163d2e2f7cc549c
+  $tcSensorLayer :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4709955997440520173##
+                   5431313412565524176##
+                   Lib.$trModule
+                   Lib.$tcSensorLayer1) -}
+6ab0dc9ff27580a16f71def1cdad65a1
+  $tcSensorLayer1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "SensorLayer"#) -}
+0a1515275c12c01c5369c97d150cc8c2
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module Lib.$trModule2 Lib.$trModule1) -}
+c702d7a69e7df65e5c9f3390d8d1a80b
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Lib"#) -}
+abb685e2f6c0a4b57f93bf7b799bbe81
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "DN-0.1.0.0-8yMn8QkkcEWDg7GIz2sx1m"#) -}
+ffd9ce16e55eb1972ef5e010183cc97a
+  data HiddenLayer = HiddenLayer {neurons2 :: [Lib.Neuron2]}
+865148f11375df6076cfc0a7415cd2c8
+  data Layer
+    = X Lib.SensorLayer | Y Lib.HiddenLayer | Z Lib.MotorLayer
+289cb6116c902969012026d3919f9bd3
+  data MotorLayer = MotorLayer {neurons :: [Lib.Neuron]}
+0c417f9a2459b8d5061a65722d262800
+  data Neuron
+    = Neuron {weights :: [GHC.Types.Double], age :: GHC.Types.Int}
+caca04c9e46c422c60d3e0c62798b708
+  data Neuron2
+    = Neuron2 {topDownWeights :: [GHC.Types.Double],
+               bottomUpWeights :: [GHC.Types.Double],
+               age2 :: GHC.Types.Int}
+cf7d62c0dd75e7ab07471295610d8eb9
+  type Response = [GHC.Types.Double]
+ae808502e425a1f7755157ad7ad4ecd4
+  data SensorLayer = SensorLayer {input :: [GHC.Types.Double]}
+e931f610358324ed3524f036d93406d1
+  age :: Lib.Neuron -> GHC.Types.Int
+  RecSel Left Lib.Neuron
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,1*U(U))>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Lib.Neuron) ->
+                 case ds of wild { Lib.Neuron ds1 ds2 -> ds2 }) -}
+3e7bc8c86ca7dc8d7cbd30fdff64265f
+  age2 :: Lib.Neuron2 -> GHC.Types.Int
+  RecSel Left Lib.Neuron2
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LLS),1*U(A,A,1*U(U))>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Lib.Neuron2) ->
+                 case ds of wild { Lib.Neuron2 ds1 ds2 ds3 -> ds3 }) -}
+185e9f91d274cfd425539bcd4b9e7d6b
+  bottomUpWeights :: Lib.Neuron2 -> [GHC.Types.Double]
+  RecSel Left Lib.Neuron2
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LSL),1*U(A,1*U,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Lib.Neuron2) ->
+                 case ds of wild { Lib.Neuron2 ds1 ds2 ds3 -> ds2 }) -}
+8343981d066eac41505b7ec5a5de9b52
+  input :: Lib.SensorLayer -> [GHC.Types.Double]
+  RecSel Left Lib.SensorLayer
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Lib.SensorLayer) ->
+                 case ds of wild { Lib.SensorLayer ds1 -> ds1 }) -}
+9eca1d0c6ac093ba5c148efe7934398e
+  neurons :: Lib.MotorLayer -> [Lib.Neuron]
+  RecSel Left Lib.MotorLayer
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Lib.MotorLayer) ->
+                 case ds of wild { Lib.MotorLayer ds1 -> ds1 }) -}
+0f9350191f14c19c12a24ba58314e4e8
+  neurons2 :: Lib.HiddenLayer -> [Lib.Neuron2]
+  RecSel Left Lib.HiddenLayer
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Lib.HiddenLayer) ->
+                 case ds of wild { Lib.HiddenLayer ds1 -> ds1 }) -}
+f8830f3e5417c1c4f285623fd3906787
+  topDownWeights :: Lib.Neuron2 -> [GHC.Types.Double]
+  RecSel Left Lib.Neuron2
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLL),1*U(1*U,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Lib.Neuron2) ->
+                 case ds of wild { Lib.Neuron2 ds1 ds2 ds3 -> ds1 }) -}
+9ecee5cf640d11e17e95af024fe37207
+  topK :: GHC.Types.Int -> [GHC.Types.Double] -> [GHC.Types.Double]
+  {- Arity: 2, Strictness: <L,1*U(U)><S,1*U>,
+     Unfolding: (\ (ds :: GHC.Types.Int) (ds1 :: [GHC.Types.Double]) ->
+                 case ds1 of wild {
+                   [] -> GHC.Types.[] @ GHC.Types.Double
+                   : ipv ipv1
+                   -> GHC.Base.map
+                        @ GHC.Types.Double
+                        @ GHC.Types.Double
+                        (let {
+                           sorted :: [GHC.Types.Double]
+                           = Data.OldList.sortBy
+                               @ GHC.Types.Double
+                               GHC.Classes.$fOrdDouble_$ccompare
+                               wild
+                         } in
+                         let {
+                           max' :: GHC.Types.Double
+                           = case ds of ww { GHC.Types.I# ww1 ->
+                             GHC.List.$w!! @ GHC.Types.Double sorted ww1 }
+                         } in
+                         \ (x :: GHC.Types.Double) ->
+                         case x of wild1 { GHC.Types.D# x1 ->
+                         case sorted of wild2 {
+                           [] -> case GHC.List.badHead ret_ty GHC.Types.Double of {}
+                           : x2 ds2
+                           -> case x2 of wild3 { GHC.Types.D# y ->
+                              case max' of wild4 { GHC.Types.D# x3 ->
+                              case GHC.Prim./##
+                                     (GHC.Prim.-## x1 y)
+                                     (GHC.Prim.-## x3 y) of wild5 { DEFAULT ->
+                              GHC.Types.D# wild5 } } } } })
+                        wild }) -}
+1626bfe21e9207739b20967e78d0c1d7
+  weights :: Lib.Neuron -> [GHC.Types.Double]
+  RecSel Left Lib.Neuron
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SL),1*U(1*U,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Lib.Neuron) ->
+                 case ds of wild { Lib.Neuron ds1 ds2 -> ds1 }) -}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+
