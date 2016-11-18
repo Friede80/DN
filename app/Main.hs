@@ -1,7 +1,7 @@
 module Main where
 
-import DN.Core
-import DN.NetworkTypes
+import           DN.Core
+import           DN.NetworkTypes
 
 main :: IO ()
 main = let (Network hidden motor) = runNetwork zs xs

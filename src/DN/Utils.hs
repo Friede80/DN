@@ -1,5 +1,10 @@
 module DN.Utils where
 
+import DN.NetworkTypes
+
+import           Data.List
+import           Data.Ord
+
 --Configuration Constants
 -- TODO: Get inside a reader monad?
 t1, t2, gamma, c :: Double
@@ -15,3 +20,16 @@ normalize min' max' x = (x - min') / (max' - min')
 -- The dot product of two vectors
 dot :: (Num a) => [a] -> [a] -> a
 dot x y = sum (zipWith (*) x y)
+
+-- TopK Competition between neurons
+topK :: Int -> [Double] -> [Double]
+topK k xs = map (max 0 . normalize min' max') xs
+  where
+    sorted = sortBy (comparing Down) xs
+    max' = head sorted
+    min' = sorted!!k
+
+updateWeights :: [Double]-> Response -> Double -> [Double]
+updateWeights ws y rate = zipWith learn ws y
+  where
+    learn w s = (1 - rate) * w + (rate * s)

@@ -2,63 +2,59 @@ module DN.HiddenLayer where
 
 import DN.NetworkTypes
 import DN.Utils
-
 import Debug.Trace
-import Data.List
-import Data.Ord
+
+stepHidden :: HiddenLayer -> Response -> Response -> HiddenLayer
+stepHidden h x z = hebbianLearnHidden x newResp z h
+  where
+    newResp = hiddenResponse h x z
 
 hebbianLearnHidden :: Response -> Response -> Response -> HiddenLayer -> HiddenLayer
-hebbianLearnHidden x y z (HiddenLayer hidden)
-  | length hidden == length y = trace "No new neuron" $ HiddenLayer $ zipWith updateNeuron y hidden
-  | otherwise = trace "Adding new neuron" $ HiddenLayer $ zipWith updateNeuron y (newNeuron2 : hidden)
+hebbianLearnHidden x y z h
+  | length (hNeurons h) == length y = trace "No new neuron" $  newHiddenLayer (hNeurons h)
+  | otherwise = trace "Adding new neuron" $ newHiddenLayer (newNeuron2 : hNeurons h)
   where
-    newNeuron2 = Neuron2 { topDownWeights = z
+    newHiddenLayer ns = HiddenLayer { hResponse = y
+                                    , hNeurons =  zipWith updateNeuron y ns }
+    newNeuron2 = YNeuron { topDownWeights = z
                          , bottomUpWeights = x
-                         , age2 = 0 }
+                         , yAge = 0 }
     updateNeuron r n
-      |  r > 0.99 = Neuron2 { topDownWeights =
-                                updateHiddenWeights (topDownWeights n) z (amnesiacLearnRate n)
-                            , bottomUpWeights =
-                                updateHiddenWeights (bottomUpWeights n) x (amnesiacLearnRate n)
-                            , age2 = age2 n + 1 }
+      |  r > 0 = YNeuron { topDownWeights =
+                             updateWeights (topDownWeights n) z (amnesiacLearnRate n)
+                         , bottomUpWeights =
+                             updateWeights (bottomUpWeights n) x (amnesiacLearnRate n)
+                         , yAge = yAge n + 1 }
       | otherwise = n
 
-updateHiddenWeights :: [Double] -> [Double] -> Double -> [Double]
-updateHiddenWeights w sig learningRate = zipWith learn w sig
-  where
-    learn w s = (1 - learningRate) * w + (learningRate * s)
-
-amnesiacLearnRate :: Neuron2 -> Double
+amnesiacLearnRate :: YNeuron -> Double
 amnesiacLearnRate n = (1+mu) / a
   where
-    a :: Double
-    a = fromIntegral (age2 n) + 1
+    a = fromIntegral (yAge n + 1)
     mu :: Double
     mu | a < t1 = 0
        | a < t2 = c * (a - t1) / (t2-t1)
        | otherwise = c * (a - t2) / gamma;
 
+hiddenResponse :: HiddenLayer -> Response -> Response -> Response
+hiddenResponse h x z = traceShow (tdr,bur) $ hiddenTopK 1 $ zipWith (+) tdr bur
+  where
+    tdr = topDownResponse z h
+    bur = bottomUpResponse x h
+
 topDownResponse :: Response -> HiddenLayer -> Response
-topDownResponse z (HiddenLayer y) = fmap (dot z . topDownWeights) y
+topDownResponse = neuralResponse topDownWeights
 
 bottomUpResponse :: Response -> HiddenLayer -> Response
-bottomUpResponse x (HiddenLayer y) = fmap (dot x . bottomUpWeights) y
+bottomUpResponse = neuralResponse bottomUpWeights
 
-hiddenResponse :: Response -> Response -> HiddenLayer -> Response
-hiddenResponse z x y = traceShow (tdr,bur) $ hiddenTopK 1 $ zipWith (+) tdr bur
-  where
-    tdr = topDownResponse z y
-    bur = bottomUpResponse x y
+neuralResponse :: (YNeuron -> [Double]) -> Response -> HiddenLayer -> Response
+neuralResponse dir x h = fmap (dot x . dir) (hNeurons h)
 
 -- Pefroms regular topK competition, but adds a new neuron if there is no
 -- perfect match
 -- TODO Set max neurons
 hiddenTopK :: Int -> [Double] -> [Double]
-hiddenTopK k ys = if isPerfectMatch
-                    then map (max 0 . normalize min' max') ys
-                    else hiddenTopK k (2:ys)
-  where
-    isPerfectMatch = traceShow ("ys",ys) $ any (>1.99) ys
-    sorted = sortBy (comparing Down) ys
-    max' = head sorted
-    min' = sorted!!k
+hiddenTopK k ys
+  | any (>1.99) ys = topK k ys
+  | otherwise      = topK k (2:ys)
