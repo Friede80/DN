@@ -17,6 +17,9 @@ library
   hs-source-dirs:      src
   exposed-modules:     DN.Core
                        DN.NetworkTypes
+                       DN.HiddenLayer
+                       DN.MotorLayer
+                       DN.Utils
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
 
