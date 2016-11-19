@@ -1,8 +1,8 @@
 module DN.HiddenLayer where
 
-import DN.NetworkTypes
-import DN.Utils
-import Debug.Trace
+import           Debug.Trace
+import           DN.NetworkTypes
+import           DN.Utils
 
 stepHidden :: HiddenLayer -> Response -> Response -> HiddenLayer
 stepHidden h x z = hebbianLearnHidden x newResp z h
@@ -11,10 +11,11 @@ stepHidden h x z = hebbianLearnHidden x newResp z h
 
 hebbianLearnHidden :: Response -> Response -> Response -> HiddenLayer -> HiddenLayer
 hebbianLearnHidden x y z h
-  | length (hNeurons h) == length y = trace "No new neuron" $  newHiddenLayer (hNeurons h)
-  | otherwise = trace "Adding new neuron" $ newHiddenLayer (newNeuron2 : hNeurons h)
+  | length (hNeurons h) == length y = newHiddenLayer (hNeurons h)
+  | otherwise = newHiddenLayer (newNeuron2 : hNeurons h)
   where
     newHiddenLayer ns = HiddenLayer { hResponse = y
+                                    , hOldResponse = hResponse h
                                     , hNeurons =  zipWith updateNeuron y ns }
     newNeuron2 = YNeuron { topDownWeights = z
                          , bottomUpWeights = x
@@ -31,13 +32,12 @@ amnesiacLearnRate :: YNeuron -> Double
 amnesiacLearnRate n = (1+mu) / a
   where
     a = fromIntegral (yAge n + 1)
-    mu :: Double
     mu | a < t1 = 0
        | a < t2 = c * (a - t1) / (t2-t1)
        | otherwise = c * (a - t2) / gamma;
 
 hiddenResponse :: HiddenLayer -> Response -> Response -> Response
-hiddenResponse h x z = traceShow (tdr,bur) $ hiddenTopK 1 $ zipWith (+) tdr bur
+hiddenResponse h x z = hiddenTopK 1 $ zipWith (+) tdr bur
   where
     tdr = topDownResponse z h
     bur = bottomUpResponse x h

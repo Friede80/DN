@@ -1,38 +1,46 @@
 module DN.Core (
-    runNetwork
+    runNewNetwork
+  , runNetwork
   ) where
 
 import           DN.HiddenLayer
 import           DN.MotorLayer
 import           DN.NetworkTypes
 
-import Debug.Trace
+import           Debug.Trace
+
+runNetwork :: Network -> [[Double]] -> [[Double]] -> Network
+runNetwork net zs xs = foldl stepNet net (zip zs xs)
 
 -- Input: A list of motor inputs and a list of sensor inputs
 -- Runs the DN over these inputs
-runNetwork :: [[Double]] -> [[Double]] -> Network
-runNetwork (z:zs) (x:xs) = foldl stepNet (runFirst initialNetwork) (zip zs xs)
+runNewNetwork :: [[Double]] -> [[Double]] -> Network
+runNewNetwork (z:z':zs) (x:x':xs) = runNetwork readyNet zs xs
   where
     runFirst :: Network -> Network
     runFirst (Network hidden motor) = Network (stepHidden hidden x z) motor
+    runSecond :: Network -> Network
+    runSecond  (Network hidden motor) = Network (stepHidden hidden x' z') motor
+    readyNet = runSecond . runFirst $ initialNetwork z
 
 stepNet :: Network -> (Response, Response) -> Network
 stepNet (Network hidden motor) (z, x) =
-  let newHiddenLayer = stepHidden hidden x z
-      newMotorLayer = if all (==0) z
-                       then stepMotor motor (hResponse hidden)
-                       else stepMotorSupervised motor (hResponse hidden) z
-  in traceShow ("Motor Response", (mResponse newMotorLayer)) $ Network newHiddenLayer newMotorLayer
+  let newMotorLayer = if all (==0) z
+                       then stepMotor motor (hOldResponse hidden)
+                       else stepMotorSupervised motor (hOldResponse hidden) z
+      newHiddenLayer = stepHidden hidden x (mResponse newMotorLayer)
+  in Network newHiddenLayer newMotorLayer
 
 -- The default starting Network
 -- TODO Randomly generate initial weights
 -- TODO Size of weight vectors is dependant on input size
-initialNetwork :: Network
-initialNetwork = Network hidden motor
+initialNetwork :: [Double] -> Network
+initialNetwork z = Network hidden motor
   where
     hidden = HiddenLayer { hResponse = []
+                         , hOldResponse = []
                          , hNeurons = initialYNeurons }
-    motor = MotorLayer { mResponse = []
+    motor = MotorLayer { mResponse = z
                        , mNeurons = initialNeurons }
     initialYNeurons = [ YNeuron { topDownWeights = [0.3, 0.1, 0.7, 0.8]
                                 , bottomUpWeights = [0.5, 0.1, 0.2]

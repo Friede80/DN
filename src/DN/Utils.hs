@@ -1,6 +1,6 @@
 module DN.Utils where
 
-import DN.NetworkTypes
+import           DN.NetworkTypes
 
 import           Data.List
 import           Data.Ord
@@ -18,8 +18,18 @@ normalize :: Double -> Double -> Double -> Double
 normalize min' max' x = (x - min') / (max' - min')
 
 -- The dot product of two vectors
-dot :: (Num a) => [a] -> [a] -> a
-dot x y = sum (zipWith (*) x y)
+dot :: [Double] -> [Double] -> Double
+dot x y = sum (zipWith (*) x' y')
+  where
+    x' = unit x
+    y' = unit y
+
+-- Normalizes a vector to unit length
+unit :: [Double] -> [Double]
+unit xs | all (==0) xs = xs
+        | otherwise = map (/vecLen) xs
+  where
+    vecLen = sqrt . sum $ map (^2) xs
 
 -- TopK Competition between neurons
 topK :: Int -> [Double] -> [Double]
