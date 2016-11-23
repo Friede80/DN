@@ -4,10 +4,12 @@ import           Debug.Trace
 import           DN.NetworkTypes
 import           DN.Utils
 
-stepHidden :: HiddenLayer -> Response -> Response -> HiddenLayer
-stepHidden h x z = hebbianLearnHidden x newResp z h
+maxNeurons = 100
+
+stepHidden :: Bool -> HiddenLayer -> Response -> Response -> HiddenLayer
+stepHidden frzn h x z = hebbianLearnHidden x newResp z h
   where
-    newResp = hiddenResponse h x z
+    newResp = hiddenResponse frzn h x z
 
 hebbianLearnHidden :: Response -> Response -> Response -> HiddenLayer -> HiddenLayer
 hebbianLearnHidden x y z h
@@ -36,8 +38,10 @@ amnesiacLearnRate n = (1+mu) / a
        | a < t2 = c * (a - t1) / (t2-t1)
        | otherwise = c * (a - t2) / gamma;
 
-hiddenResponse :: HiddenLayer -> Response -> Response -> Response
-hiddenResponse h x z = hiddenTopK 1 $ zipWith (+) tdr bur
+hiddenResponse :: Bool -> HiddenLayer -> Response -> Response -> Response
+hiddenResponse frzn h x z = if frzn
+                              then topK 1 $ zipWith (+) tdr bur
+                              else hiddenTopK 1 $ zipWith (+) tdr bur
   where
     tdr = topDownResponse z h
     bur = bottomUpResponse x h
@@ -56,5 +60,6 @@ neuralResponse dir x h = fmap (dot x . dir) (hNeurons h)
 -- TODO Set max neurons
 hiddenTopK :: Int -> [Double] -> [Double]
 hiddenTopK k ys
+  | length ys >= maxNeurons = topK k ys
   | any (>1.99) ys = topK k ys
   | otherwise      = topK k (2:ys)

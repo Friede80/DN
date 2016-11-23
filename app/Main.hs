@@ -1,28 +1,37 @@
 module Main where
 
-import           DN.Core
-import           DN.NetworkTypes
+import           DN.Homework
 
-main :: IO ()
+main :: IO()
 main = do
-  let net = runNewNetwork zs xs
-      (Network hidden motor) = runNetwork net testZs xs
-  print $ "Done " ++ (show (length (hResponse hidden)))
+  putStrLn "DN-1"
+  hw4 dn1 dn1'
+  putStrLn "DN-2"
+  hw4 dn2 dn2'
+  putStrLn "DN-3"
+  hw4 dn3 dn3'
 
-bkgZ = [1,0,0,0]
-z1 = [0,1,0,0]
-z2 = [0,0,1,0]
-z3 = [0,0,0,1]
-zs = replicate 3 bkgZ ++ concatMap fz [z1,z2,z3] ++ replicate 1 bkgZ
-fz z = replicate 2 z ++ replicate 1 bkgZ
+{--For vision processing toy problem
+main = do
+  let net = runNewNetwork zs' xs'
+      res = testNetwork net zs' xs'
+  print res
 
-testZs = bkgZ:bkgZ:(replicate 20 [0,0,0,0])
+z1 = [1,0,0,0]
+z2 = [0,1,0,0]
+z3 = [0,0,1,0]
+z4 = [0,0,0,1]
+zs = [z1,z2,z3,z4]
 
-bkgX = [0,1,0]
 x1 = [0,0,1]
 x2 = [1,0,1]
 x3 = [1,1,0]
-xs = replicate 1 bkgX ++ concatMap fx [x1,x2,x3] ++ replicate 3 bkgX
-fx x = replicate 2 x ++ replicate 1 bkgX
+x4 = [0,1,0]
+xs = [x1,x2,x3,x4]
 
-testXs = concatMap fx [x1,x2] ++ replicate 2 bkgX
+bkgX = head xs
+bkgZ = head zs
+zs' = replicate 2 bkgZ ++ concatMap (expand bkgZ) zs ++ replicate 2 bkgZ
+xs' = concatMap (expand bkgX) xs ++ replicate 4 bkgX
+expand bkg x = replicate 4 x ++ replicate 2 bkg
+-}

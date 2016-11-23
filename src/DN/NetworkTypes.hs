@@ -11,8 +11,6 @@ data YNeuron = YNeuron { topDownWeights  :: [Double]
                        , yAge            :: Int
                        }
 
-newtype SensorLayer = SensorLayer [Double] deriving Show
-
 data HiddenLayer = HiddenLayer { hResponse    :: Response
                                , hOldResponse :: Response
                                , hNeurons     :: [YNeuron]
@@ -22,7 +20,11 @@ data MotorLayer = MotorLayer { mResponse :: Response
                              , mNeurons  :: [Neuron]
                              } deriving Show
 
-data Network = Network HiddenLayer MotorLayer deriving Show
+data SensorLayer = SensorLayer { sResponse :: Response
+                               , sNeurons  :: [Neuron]
+                               } deriving Show
+
+data Network = Network SensorLayer HiddenLayer MotorLayer deriving Show
 
 instance Show YNeuron where
   show YNeuron { topDownWeights=t, bottomUpWeights=b, yAge=a } =

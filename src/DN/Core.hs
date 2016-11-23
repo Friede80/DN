@@ -1,52 +1,78 @@
 module DN.Core (
     runNewNetwork
   , runNetwork
+  , testNetwork
   ) where
 
 import           DN.HiddenLayer
 import           DN.MotorLayer
 import           DN.NetworkTypes
+import           DN.SensorLayer
 
+import           Control.Monad
+import           Control.Monad.Trans.Writer.Lazy
 import           Debug.Trace
 
+testNetwork :: Network -> [[Double]] -> [[Double]] -> [(Response,Response)]
+testNetwork net zs xs = responses
+  where
+    responses = execWriter $ foldM stepTest net (zip testZs xs)
+    testZs = bkgZ:bkgZ:repeat emptyZ
+    emptyZ = fmap (const 0) bkgZ
+    bkgZ = head zs
+
+stepTest :: Network -> (Response,Response) -> Writer [(Response,Response)] Network
+stepTest net (z,x) = do
+  tell [(sResponse sensor, mResponse motor)]
+  return newNet
+  where
+    newNet@(Network sensor _ motor) = stepNet True net (z,x)
+
+
 runNetwork :: Network -> [[Double]] -> [[Double]] -> Network
-runNetwork net zs xs = foldl stepNet net (zip zs xs)
+runNetwork net zs xs = foldl (stepNet False) net (zip zs xs)
 
 -- Input: A list of motor inputs and a list of sensor inputs
 -- Runs the DN over these inputs
 runNewNetwork :: [[Double]] -> [[Double]] -> Network
-runNewNetwork (z:z':zs) (x:x':xs) = runNetwork readyNet zs xs
+runNewNetwork zs xs = runNetwork readyNet zs xs
   where
-    runFirst :: Network -> Network
-    runFirst (Network hidden motor) = Network (stepHidden hidden x z) motor
-    runSecond :: Network -> Network
-    runSecond  (Network hidden motor) = Network (stepHidden hidden x' z') motor
-    readyNet = runSecond . runFirst $ initialNetwork z
+    bkgX = head xs
+    bkgZ = head zs
+    runHidden (Network sensor hidden motor) = Network sensor (stepHidden False hidden bkgX bkgZ) motor
+    readyNet = runHidden . runHidden $ initialNetwork bkgX bkgZ
 
-stepNet :: Network -> (Response, Response) -> Network
-stepNet (Network hidden motor) (z, x) =
-  let newMotorLayer = if all (==0) z
+
+stepNet :: Bool -> Network -> (Response, Response) -> Network
+stepNet frzn (Network sensor hidden motor) (z, x) =
+  let newSensorLayer = if all (==0) x
+                         then stepSensor sensor (hOldResponse hidden)
+                         else stepSensorSupervised sensor (hOldResponse hidden) x
+      newMotorLayer = if all (==0) z
                        then stepMotor motor (hOldResponse hidden)
                        else stepMotorSupervised motor (hOldResponse hidden) z
-      newHiddenLayer = stepHidden hidden x (mResponse newMotorLayer)
-  in Network newHiddenLayer newMotorLayer
+      newHiddenLayer = stepHidden frzn hidden (sResponse newSensorLayer) (mResponse newMotorLayer)
+  in Network newSensorLayer newHiddenLayer newMotorLayer
 
 -- The default starting Network
 -- TODO Randomly generate initial weights
--- TODO Size of weight vectors is dependant on input size
-initialNetwork :: [Double] -> Network
-initialNetwork z = Network hidden motor
+initialNetwork :: [Double] -> [Double] -> Network
+initialNetwork x z = Network sensor hidden motor
   where
     hidden = HiddenLayer { hResponse = []
                          , hOldResponse = []
                          , hNeurons = initialYNeurons }
     motor = MotorLayer { mResponse = z
-                       , mNeurons = initialNeurons }
+                       , mNeurons = initialMNeurons }
+    sensor = SensorLayer { sResponse = z
+                         , sNeurons = initialSNeurons }
     initialYNeurons = [ YNeuron { topDownWeights = [0.3, 0.1, 0.7, 0.8]
                                 , bottomUpWeights = [0.5, 0.1, 0.2]
                                 , yAge = 0 }
                       , YNeuron { topDownWeights = [0.7, 0.6, 0.9, 0.9]
                                 , bottomUpWeights = [0.4, 0.8, 0.1]
                                 , yAge = 0 } ]
-    initialNeurons = replicate 4 Neuron { weights = [0,0]
-                                        , age = 0 }
+    initialSNeurons = replicate (length x) Neuron { weights = [0,0]
+                                                  , age = 0 }
+    initialMNeurons = replicate (length z) Neuron { weights = [0,0]
+                                                  , age = 0 }
