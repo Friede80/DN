@@ -16,13 +16,12 @@ data HiddenLayer = HiddenLayer { hResponse    :: Response
                                , hNeurons     :: [YNeuron]
                                } deriving Show
 
-data MotorLayer = MotorLayer { mResponse :: Response
-                             , mNeurons  :: [Neuron]
+data ExternalLayer = ExLayer { response :: Response
+                             , neurons  :: [Neuron]
                              } deriving Show
 
-data SensorLayer = SensorLayer { sResponse :: Response
-                               , sNeurons  :: [Neuron]
-                               } deriving Show
+type MotorLayer = ExternalLayer
+type SensorLayer = ExternalLayer
 
 data Network = Network SensorLayer HiddenLayer MotorLayer deriving Show
 

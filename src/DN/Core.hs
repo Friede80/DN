@@ -4,10 +4,9 @@ module DN.Core (
   , testNetwork
   ) where
 
-import           DN.HiddenLayer
-import           DN.MotorLayer
+import           DN.ExternalLayer
 import           DN.NetworkTypes
-import           DN.SensorLayer
+import           DN.HiddenLayer
 
 import           Control.Monad
 import           Control.Monad.Trans.Writer.Lazy
@@ -23,7 +22,7 @@ testNetwork net zs xs = responses
 
 stepTest :: Network -> (Response,Response) -> Writer [(Response,Response)] Network
 stepTest net (z,x) = do
-  tell [(sResponse sensor, mResponse motor)]
+  tell [(response sensor, response motor)]
   return newNet
   where
     newNet@(Network sensor _ motor) = stepNet True net (z,x)
@@ -46,12 +45,12 @@ runNewNetwork zs xs = runNetwork readyNet zs xs
 stepNet :: Bool -> Network -> (Response, Response) -> Network
 stepNet frzn (Network sensor hidden motor) (z, x) =
   let newSensorLayer = if all (==0) x
-                         then stepSensor sensor (hOldResponse hidden)
-                         else stepSensorSupervised sensor (hOldResponse hidden) x
+                         then stepLayer sensor (hOldResponse hidden)
+                         else stepLayerSupervised sensor (hOldResponse hidden) x
       newMotorLayer = if all (==0) z
-                       then stepMotor motor (hOldResponse hidden)
-                       else stepMotorSupervised motor (hOldResponse hidden) z
-      newHiddenLayer = stepHidden frzn hidden (sResponse newSensorLayer) (mResponse newMotorLayer)
+                       then stepLayer motor (hOldResponse hidden)
+                       else stepLayerSupervised motor (hOldResponse hidden) z
+      newHiddenLayer = stepHidden frzn hidden (response newSensorLayer) (response newMotorLayer)
   in Network newSensorLayer newHiddenLayer newMotorLayer
 
 -- The default starting Network
@@ -62,10 +61,10 @@ initialNetwork x z = Network sensor hidden motor
     hidden = HiddenLayer { hResponse = []
                          , hOldResponse = []
                          , hNeurons = initialYNeurons }
-    motor = MotorLayer { mResponse = z
-                       , mNeurons = initialMNeurons }
-    sensor = SensorLayer { sResponse = z
-                         , sNeurons = initialSNeurons }
+    motor = ExLayer { response = z
+                       , neurons = initialMNeurons }
+    sensor = ExLayer { response = z
+                         , neurons = initialSNeurons }
     initialYNeurons = [ YNeuron { topDownWeights = [0.3, 0.1, 0.7, 0.8]
                                 , bottomUpWeights = [0.5, 0.1, 0.2]
                                 , yAge = 0 }

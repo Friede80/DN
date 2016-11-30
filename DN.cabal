@@ -18,8 +18,7 @@ library
   exposed-modules:     DN.Core
                        DN.NetworkTypes
                        DN.HiddenLayer
-                       DN.MotorLayer
-                       DN.SensorLayer
+                       DN.ExternalLayer
                        DN.Utils
                        DN.Homework
   build-depends:       base >= 4.7 && < 5
